@@ -4,7 +4,7 @@ import pandas as pd
 # TITLE
 st.title("New York City Airbnb Open Data")
 # DESCRIPTION (saved in external file)
-description = open("NYC-airbnb.md")
+description = open("README.md")
 st.markdown(description.read())
 description.close()
 st.divider()
