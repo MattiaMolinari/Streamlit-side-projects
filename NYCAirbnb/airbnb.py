@@ -4,13 +4,13 @@ import pandas as pd
 # TITLE
 st.title("New York City Airbnb Open Data")
 # DESCRIPTION (saved in external file)
-description = open("README.md")
+description = open("NYCAirbnb/README.md")
 st.markdown(description.read())
 description.close()
 st.divider()
 
 # reading the dataset
-df = pd.read_csv("NYC-airbnb-2019.csv")
+df = pd.read_csv("NYCAirbnb/NYC-airbnb-2019.csv")
 # FILTERS
 with st.container():
     st.header("Filters")
@@ -151,14 +151,24 @@ else:
                         with c4:
                             st.metric("Number of reviews", value=row.number_of_reviews)
                         with c5:
-                            st.metric("Date of last review", value=row.last_review)
+                            st.metric(
+                                "Date of last review",
+                                value=row.last_review
+                                if pd.notna(row.last_review)
+                                else "No reviews",
+                            )
                         with c6:
-                            st.metric("Review per month", value=row.reviews_per_month)
+                            st.metric(
+                                "Review per month",
+                                value=row.reviews_per_month
+                                if pd.notna(row.reviews_per_month)
+                                else "0.00",
+                            )
                         st.divider()
 
     with airbnb_map:
         st.map(
-            df_details.replace(
+            df_select.replace(
                 {
                     "room_type": {
                         "Private room": "#32a852",
@@ -170,4 +180,6 @@ else:
             latitude="latitude",
             longitude="longitude",
             # color="room_type",
+            size="1",
+            use_container_width=True,
         )
